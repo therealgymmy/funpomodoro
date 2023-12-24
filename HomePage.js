@@ -40,6 +40,7 @@ const HomePage = () => {
             }, 1000);
         } else if (!isRunning && timer !== 0) {
             clearInterval(interval);
+            setTimer(15 * Minute);
             resetAnimation();
         }
         return () => clearInterval(interval);
