@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "funpomodoro",
+    "name": "Fun Pomodoro",
     "slug": "funpomodoro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ios_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
