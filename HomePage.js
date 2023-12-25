@@ -108,28 +108,6 @@ const HomePage = () => {
         return () => clearInterval(interval);
     }, [isRunning, timer, mode]);
 
-    // return (
-    //     <View style={styles.container}>
-    //         <View style={styles.header}>
-    //             <Text style={styles.title}>Fun Pomodoro</Text>
-    //         </View>
-    //         <TouchableOpacity
-    //             style={isRunning ? styles.stopButton : styles.startButton}
-    //             onPress={() => setIsRunning(!isRunning)}>
-    //             <Text style={styles.buttonText}>{isRunning ? 'Stop' : 'Start'}</Text>
-    //         </TouchableOpacity>
-    //         <View style={styles.barContainer}>
-    //             <Animated.View
-    //                 style={[styles.animatedBar, {
-    //                     width: animatedWidth.interpolate({
-    //                         inputRange: [0, 1],
-    //                         outputRange: ['0%', '100%']
-    //                     })
-    //                 }]}
-    //             />
-    //         </View>
-    //     </View>
-    // );
     return (
         <Animated.View style={[styles.container, { backgroundColor: backgroundColorInterpolate }]}>
             <View style={styles.header}>
