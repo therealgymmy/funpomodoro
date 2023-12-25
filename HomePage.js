@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 
 const HomePage = () => {
     // const Minute = 60;
@@ -14,6 +14,7 @@ const HomePage = () => {
           toValue: 1, // Represents 100% width
           duration: timer * 1000, // Duration of the timer in milliseconds
           useNativeDriver: false,
+          easing: Easing.linear, // or Easing.inOut(Easing.ease) for a smoother effect
         }).start();
       };
     const resetAnimation = () => {
@@ -51,27 +52,21 @@ const HomePage = () => {
             <View style={styles.header}>
                 <Text style={styles.title}>Fun Pomodoro</Text>
             </View>
-            {!isRunning ? (
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => setIsRunning(true)}>
-                    <Text style={styles.buttonText}>Start</Text>
-                </TouchableOpacity>
-            ) : (
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => setIsRunning(false)}>
-                    <Text style={styles.buttonText}>Stop</Text>
-                </TouchableOpacity>
-            )}
-            <Animated.View
-                style={[styles.animatedBar, {
-                    width: animatedWidth.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['50%', '0%'] // Bar width from 100% to 0%
-                    })
-                }]}
-            />
+            <TouchableOpacity
+                style={isRunning ? styles.stopButton : styles.startButton}
+                onPress={() => setIsRunning(!isRunning)}>
+                <Text style={styles.buttonText}>{isRunning ? 'Stop' : 'Start'}</Text>
+            </TouchableOpacity>
+            <View style={styles.barContainer}>
+                <Animated.View
+                    style={[styles.animatedBar, {
+                        width: animatedWidth.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: ['0%', '100%'] // Change from full width to zero
+                        })
+                    }]}
+                />
+            </View>
         </View>
     );
 };
@@ -81,34 +76,56 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#333333',
     },
     header: {
         paddingTop: 50,
         paddingBottom: 50,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#333333',
         alignItems: 'center',
+        borderRadius: 30,
     },
     title: {
-        fontSize: 24,
-        marginBottom: 20,
+        fontSize: 40,
+        fontWeight: 'bold',
+        color: 'white',
     },
-    button: {
+    startButton: {
         width: 200,
         height: 200,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#4CAF50', // Green color for start
         borderRadius: 100,
+        margin: 50,
+    },
+    stopButton: {
+        width: 200,
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FF0000', // Red color for stop
+        borderRadius: 100,
+        margin: 50,
     },
     buttonText: {
         color: 'white',
         fontSize: 20,
     },
-    animatedBar: {
-        height: 10,
-        backgroundColor: 'blue', // Choose your color
+    barContainer: {
+        height: 30,
+        width: '80%', // Adjust to your preferred width
+        backgroundColor: '#E0E0E0', // A lighter color for the static frame
+        borderColor: 'white',
+        borderRadius: 30,
+        borderWidth: 5,
         marginTop: 20,
+        overflow: 'hidden', // Ensures the animated bar doesn't overflow
+    },
+    animatedBar: {
+        height: '100%', // Same height as the container
+        backgroundColor: 'blue', // Choose your color
+        borderRadius: 30, // Adjust for desired roundness
     },
 });
 
