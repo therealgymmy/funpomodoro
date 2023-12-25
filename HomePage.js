@@ -7,8 +7,8 @@ const HomePage = ({ route, navigation }) => {
     const { workInterval, setWorkInterval, restInterval, setRestInterval } = useTimer();
     console.log('workInterval=', workInterval, ', restInterval=', restInterval);
 
-    // const Minute = 60;
-    const Minute = 1; // TODO: beyondsora - Use 1 second for testing for now
+    const Minute = 60;
+    // const Minute = 1; // TODO: beyondsora - Use 1 second for testing for now
     const [isRunning, setIsRunning] = useState(false);
     const [timer, setTimer] = useState(workInterval * Minute);
     const [mode, setMode] = useState('work'); // 'work' or 'break'
