@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 import { Audio } from 'expo-av';
+import { useTimer } from './TimerContext';
 
-const HomePage = () => {
+const HomePage = ({ route, navigation }) => {
+    const { workInterval, setWorkInterval, restInterval, setRestInterval } = useTimer();
+    console.log('workInterval=', workInterval, ', restInterval=', restInterval);
+
     // const Minute = 60;
     const Minute = 1; // TODO: beyondsora - Use 1 second for testing for now
-    const RestMinutes = 2;
-    const WorkMinutes = 3;
     const [isRunning, setIsRunning] = useState(false);
-    const [timer, setTimer] = useState(WorkMinutes * Minute);
+    const [timer, setTimer] = useState(workInterval * Minute);
     const [mode, setMode] = useState('work'); // 'work' or 'break'
     const backgroundColorAnim = useRef(new Animated.Value(0)).current;
     const backgroundColorInterpolate = backgroundColorAnim.interpolate({
@@ -66,20 +68,20 @@ const HomePage = () => {
         animatedWidth.setValue(0);
     };
 
-    useEffect(() => {
-        const playSound = async () => {
-            try {
-                console.log('play sound');
-                const soundObject = new Audio.Sound();
-                await soundObject.loadAsync(require('./assets/notifications-sound.mp3'));
-                await soundObject.playAsync();
-                // Remember to unload the sound from memory after it's played
-                await soundObject.unloadAsync();
-            } catch (error) {
-                console.log(error);
-            }
-        };
+    const playSound = async () => {
+        try {
+            console.log('play sound');
+            const soundObject = new Audio.Sound();
+            await soundObject.loadAsync(require('./assets/notifications-sound.mp3'));
+            await soundObject.playAsync();
+            // Remember to unload the sound from memory after it's played
+            await soundObject.unloadAsync();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
+    useEffect(() => {
         let interval;
         if (isRunning) {
             startAnimation();
@@ -89,24 +91,24 @@ const HomePage = () => {
                         playSound();
                         flashBackground();
                         setMode('break');
-                        return RestMinutes * Minute;
+                        return restInterval * Minute;
                     } else if (prevTimer === 1 && mode === 'break') {
                         playSound();
                         flashBackground();
                         setMode('work');
-                        return WorkMinutes * Minute;
+                        return workInterval * Minute;
                     }
                     return prevTimer - 1;
                 });
             }, 1000);
-        } else if (!isRunning && timer !== 0) {
+        } else if (!isRunning) {
             clearInterval(interval);
-            setTimer(WorkMinutes * Minute);
+            setTimer(workInterval * Minute);
             setMode('work');
             resetAnimation();
         }
         return () => clearInterval(interval);
-    }, [isRunning, timer, mode]);
+    }, [isRunning, timer, workInterval, restInterval]);
 
     return (
         <Animated.View style={[styles.container, { backgroundColor: backgroundColorInterpolate }]}>
