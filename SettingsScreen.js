@@ -12,14 +12,14 @@ const SettingsScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text>Work Interval (minutes):</Text>
+            <Text style={{color: 'white'}}>Work Interval (minutes):</Text>
             <TextInput
                 style={styles.input}
                 value={workInterval.toString()}
                 onChangeText={setWorkInterval}
                 keyboardType='numeric'
             />
-            <Text>Rest Interval (minutes):</Text>
+            <Text style={{color: 'white'}}>Rest Interval (minutes):</Text>
             <TextInput
                 style={styles.input}
                 value={restInterval.toString()}
@@ -40,11 +40,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#333333',
     },
     input: {
-        borderWidth: 1,
-        borderColor: 'gray',
-        width: '100%',
-        padding: 10,
-        marginVertical: 10,
+        width: '20%',
+        height: 40, // Adjust the height as needed
+        margin: 12, // Adjust the margin as needed
+        borderWidth: 1, // Optional, if you want a border
+        padding: 10, // Adjust the padding as needed
+        borderRadius: 20, // This makes the corners rounded
+        backgroundColor: '#f2f2f2', // Light gray background color
     },
 });
 
