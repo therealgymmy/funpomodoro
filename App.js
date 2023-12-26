@@ -14,7 +14,6 @@ export default function App() {
     <TimerProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
           // Overlay header on top of screen
           screenOptions={{
             headerTransparent: true,
