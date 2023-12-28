@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTimer } from './TimerContext';
 
 const SettingsScreen = ({ route, navigation }) => {
@@ -26,7 +26,9 @@ const SettingsScreen = ({ route, navigation }) => {
                 onChangeText={setRestInterval}
                 keyboardType='numeric'
             />
-            <Button title="Save Settings" onPress={saveSettings} />
+            <TouchableOpacity style={styles.button} onPress={saveSettings}>
+                <Text>Save Settings</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -47,6 +49,15 @@ const styles = StyleSheet.create({
         padding: 10, // Adjust the padding as needed
         borderRadius: 20, // This makes the corners rounded
         backgroundColor: '#f2f2f2', // Light gray background color
+    },
+    button: {
+        marginTop: 50,
+        width: '25%',
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ADD8E6',
     },
 });
 

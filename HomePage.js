@@ -115,20 +115,24 @@ const HomePage = ({ route, navigation }) => {
             <View style={styles.header}>
                 <Text style={styles.title}>Fun Pomodoro</Text>
             </View>
-            <TouchableOpacity
-                style={isRunning ? styles.stopButton : styles.startButton}
-                onPress={() => setIsRunning(!isRunning)}>
-                <Text style={styles.buttonText}>{isRunning ? 'Stop' : 'Start'}</Text>
-            </TouchableOpacity>
-            <View style={styles.barContainer}>
-                <Animated.View
-                    style={[styles.animatedBar, {
-                        width: animatedWidth.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: ['0%', '100%']
-                        })
-                    }]}
-                />
+            <View style={styles.body}>
+                <TouchableOpacity
+                    style={isRunning ? styles.stopButton : styles.startButton}
+                    onPress={() => setIsRunning(!isRunning)}>
+                    <Text style={styles.buttonText}>{isRunning ? 'Stop' : 'Start'}</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.footer}>
+                <View style={styles.barContainer}>
+                    <Animated.View
+                        style={[styles.animatedBar, {
+                            width: animatedWidth.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: ['0%', '100%']
+                            })
+                        }]}
+                    />
+                </View>
             </View>
         </Animated.View>
     );
@@ -142,11 +146,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#333333',
     },
     header: {
-        paddingTop: 50,
-        paddingBottom: 50,
-        backgroundColor: 'transparent',
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'transparent',
         borderRadius: 30,
+    },
+    body: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    footer: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     title: {
         fontSize: 40,
@@ -160,7 +175,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#4CAF50', // Green color for start
         borderRadius: 100,
-        margin: 50,
     },
     stopButton: {
         width: 200,
