@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTimer } from './TimerContext';
+import { useTimer, useTestMode } from './TimerContext';
 
 const SettingsScreen = ({ route, navigation }) => {
     const { workInterval, setWorkInterval, restInterval, setRestInterval } = useTimer();
     console.log('workInterval=', workInterval, ', restInterval=', restInterval);
 
     const saveSettings = () => {
+        navigation.goBack();
+    };
+
+    const { testEnabled, setTestEnabled } = useTestMode();
+    const toggleTestMode = () => {
+        setTestEnabled(!testEnabled);
         navigation.goBack();
     };
 
@@ -28,6 +34,9 @@ const SettingsScreen = ({ route, navigation }) => {
             />
             <TouchableOpacity style={styles.button} onPress={saveSettings}>
                 <Text>Save Settings</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={toggleTestMode}>
+                <Text>Toggle Test</Text>
             </TouchableOpacity>
         </View>
     );
@@ -52,7 +61,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 50,
-        width: '25%',
+        width: '50%',
         height: 40,
         borderRadius: 20,
         justifyContent: 'center',

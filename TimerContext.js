@@ -14,3 +14,16 @@ export const TimerProvider = ({ children }) => {
     </TimerContext.Provider>
   );
 };
+
+const TestModeContext = createContext();
+
+export const useTestMode = () => useContext(TestModeContext);
+
+export const TestModeProvider = ({ children }) => {
+  const [testEnabled, setTestEnabled] = useState(false);
+  return (
+    <TestModeContext.Provider value={{ testEnabled, setTestEnabled }}>
+      {children}
+    </TestModeContext.Provider>
+  );
+};
