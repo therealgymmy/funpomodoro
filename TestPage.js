@@ -1,39 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { Animated, Easing, View, TouchableOpacity, Text } from 'react-native';
-import CircularProgress from './CircularProgress';
+import * as React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Audio } from 'expo-av';
 
-const TestPage = () => {
-    const [animatedValue, setAnimatedValue] = useState(new Animated.Value(0));
+export default function TestPage() {
+  const [sound, setSound] = React.useState();
 
-    const startAnimation = () => {
-        animatedValue.setValue(0);
-        Animated.timing(animatedValue, {
-            toValue: 100,
-            duration: 10000,
-            easing: Easing.inOut(Easing.linear),
-            useNativeDriver: true,
-        }).start();
-    };
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(require('./assets/notifications-sound.mp3'));
+    setSound(sound);
 
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <CircularProgress radius={100} animatedValue={animatedValue} />
-            <TouchableOpacity
-                onPress={startAnimation}
-                style={{
-                    position: 'absolute',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: 100,
-                    height: 100,
-                    borderRadius: 50,
-                    backgroundColor: 'blue',
-                }}
-            >
-                <Text style={{ color: 'white' }}>Press Me</Text>
-            </TouchableOpacity>
-        </View>
-    );
-};
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
 
-export default TestPage;
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  return (
+    <View styles={styles.container}>
+          <TouchableOpacity style={styles.button} onPress={playSound}>
+              <Text>Play Sound</Text>
+          </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor: '#333333',
+    },
+    button: {
+        marginTop: 50,
+        width: '50%',
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ADD8E6',
+    },
+});

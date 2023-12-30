@@ -75,11 +75,13 @@ const HomePage = ({ route, navigation }) => {
     const playSound = async () => {
         try {
             console.log('play sound');
-            const soundObject = new Audio.Sound();
-            await soundObject.loadAsync(require('./assets/notifications-sound.mp3'));
-            await soundObject.playAsync();
-            // Remember to unload the sound from memory after it's played
-            await soundObject.unloadAsync();
+            const { sound } = await Audio.Sound.createAsync(require('./assets/notifications-sound.mp3'));
+            sound.setStatusAsync({ shouldPlay: true, onPlaybackStatusUpdate: status => {
+                if (status.didJustFinish) {
+                    sound.unloadAsync();
+                }
+            }});
+            await sound.playAsync();
         } catch (error) {
             console.log(error);
         }
@@ -93,14 +95,14 @@ const HomePage = ({ route, navigation }) => {
             interval = setInterval(() => {
                 setTimer(prevTimer => {
                     if (prevTimer === 1 && mode === 'work') {
-                        playSound();
                         flashBackground();
-                        setMode('break');
+                        playSound().then(() => { setMode('break') })
+                        // setMode('break');
                         return restInterval * Minute;
                     } else if (prevTimer === 1 && mode === 'break') {
-                        playSound();
                         flashBackground();
-                        setMode('work');
+                        playSound().then(() => { setMode('work') })
+                        // setMode('work');
                         return workInterval * Minute;
                     }
                     return prevTimer - 1;

@@ -29,7 +29,7 @@ export default function App() {
             {/* <Stack.Screen
             name="Test"
             component={TestPage}
-          /> */}
+            /> */}
             <Stack.Screen
               name="Home"
               component={HomePage}
