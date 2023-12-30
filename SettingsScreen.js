@@ -36,7 +36,7 @@ const SettingsScreen = ({ route, navigation }) => {
                 <Text>Save Settings</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={toggleTestMode}>
-                <Text>Toggle Test</Text>
+                <Text>{testEnabled ? 'Disable Test Mode' : 'Enable Test Mode'}</Text>
             </TouchableOpacity>
         </View>
     );
